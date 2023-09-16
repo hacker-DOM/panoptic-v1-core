@@ -1,0 +1,22 @@
+[tool.pyright]
+typeCheckingMode = "basic"
+
+# enable EVERYTHING. See
+# https://microsoft.github.io/pyright/#/configuration?id=diagnostic-rule-defaults
+# reportUntypedFunctionDecorator = true
+# reportUntypedNamedTuple = true
+# reportCallInDefaultInitializer = true
+# reportImplicitOverride = true
+# reportImplicitStringConcatenation = true
+# reportImportCycles = true
+# reportMissingSuperCall = true
+# reportPropertyTypeMismatch = true
+# reportShadowedImports = true
+# reportUninitializedInstanceVariable = true
+# reportUnnecessaryTypeIgnoreComment = true
+# reportUnusedCallResult = true
+
+# CUSTOM overrides
+reportMissingTypeStubs = false
+reportWildcardImportFromLibrary = false
+reportSelfClsParameterName = false
