@@ -16,3 +16,4 @@ remappings = [
     "@scripts/=scripts/",
     "@uniswap/=lib/",
 ]
+optimizer = {enabled = true, runs = 200}

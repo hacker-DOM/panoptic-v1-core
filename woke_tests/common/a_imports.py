@@ -58,4 +58,3 @@ import rich.console, rich.panel, rich.text
 
 from woke.testing import *
 from woke.testing.fuzzing import *
-

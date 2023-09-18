@@ -19,8 +19,8 @@ setup:
     source .venv/bin/activate;
     pip install woke;
 
-# fuzz:
-#     WOKE_TESTS_FLOWS_COUNT=20 WOKE_TESTS_SEQUENCES_COUNT=2 woke --debug fuzz -s 4f2a521550c29390 --passive -n 1 woke_tests/tier3/test_.py
+fuzz:
+    WOKE_TESTS_FLOWS_COUNT=20 WOKE_TESTS_SEQUENCES_COUNT=2 woke --debug fuzz -s 4f2a521550c29390 --passive -n 1 woke_tests/tier2/test_.py
 
 default_impl:
     # fun fact 1 - the $'...' syntax is called ANSI-C quoting and allows us to

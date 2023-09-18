@@ -2,6 +2,7 @@ from .c_types import *
 
 # pyright: basic
 
+
 def adjusted_scientific_notation(val, num_decimals=2, exponent_pad=2):
     # https://stackoverflow.com/a/62561794/4204961
     exponent_template = "{:0>%d}" % exponent_pad
@@ -25,6 +26,7 @@ def format_int(x: int) -> str:
     #     return f'{x:.2e}'
     # return f'{x:.2E} ({x:_})'
     return f"{adjusted_scientific_notation(x)} ({x:_})"
+
 
 def num_to_letter(num: int) -> str:
     """converts a number to a lower-case letter

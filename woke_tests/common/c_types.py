@@ -2,6 +2,7 @@ from .b_constants import *
 
 TD = TypeVar("TD")
 
+
 class duint(Dict[TD, int]):
     """dict of unsigned integers."""
 
@@ -26,9 +27,11 @@ class duint(Dict[TD, int]):
         assert __value >= -self.abs_tol
         return super().__setitem__(__key, max(0, __value))
 
+
 @dataclass
 class State:
     ...
+
 
 class ResAndExp(NamedTuple):
     res: int

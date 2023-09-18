@@ -1,5 +1,6 @@
 from .d_impl import *
 
+
 class Flows(Impl):
     @flow()
     def flow_random_int(s):
@@ -8,4 +9,3 @@ class Flows(Impl):
 
         # ===== Implement =====
         s.impl_random_int(x)
-

@@ -1,10 +1,12 @@
 from .b_helpers import *
 
+
 class Hooks(Helpers):
     @override
     def pre_sequence(s):
         # s.tokens = []
 
+        s._deploy()
         for i in range(NUM_TOKENS):
             decimals = random_int(
                 # TOKEN_MIN_DECIMALS,
@@ -23,8 +25,8 @@ class Hooks(Helpers):
 
     @override
     def pre_flow(s, flow: Callable[..., None]):
-        with open(csv, 'a') as f:
-            _ = f.write(f'{s.sequence_num},{s.flow_num},{flow.__name__}\n')
+        with open(csv, "a") as f:
+            _ = f.write(f"{s.sequence_num},{s.flow_num},{flow.__name__}\n")
 
     @override
     def post_sequence(s):

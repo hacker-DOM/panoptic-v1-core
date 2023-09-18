@@ -22,3 +22,8 @@ tenderly.yaml
 
 deployments
 broadcast
+
+#python for woke 
+## Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
