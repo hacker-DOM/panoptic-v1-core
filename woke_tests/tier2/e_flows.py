@@ -17,4 +17,5 @@ class Flows(Impl):
     def deploy_panoptic_pool(
         s, random_v3_pool: IUniswapV3Pool, random_user: Account, random_salt: int
     ):
+        print("deploy v3 pool",random_v3_pool, "salt", random_salt )
         s.impl_deploy_panoptic_pool(random_v3_pool, random_user, random_salt)

@@ -1,7 +1,7 @@
 from woke_tests.tier2.g_issues import Issues
 from woke.testing.core import default_chain
 from woke.development.core import Account
-from woke_tests.runner import get_address
+from woke_tests.runner import get_address, run, BoundFlow
 from woke.development.transactions import must_revert
 from pytypes.contracts.libraries.Errors import Errors
 from pytypes.lib.v3core.contracts.interfaces.IUniswapV3Pool import IUniswapV3Pool
@@ -52,4 +52,30 @@ def test_deploy_pool_unsupported():
                 "random_user": Account(user_addr),
                 "random_salt": 55,
             },
+        )
+
+
+@default_chain.connect()
+def test_deploy_pool_already_initialized():
+
+    issues = Issues()
+
+    flows = [
+        BoundFlow(
+            name="deploy_panoptic_pool",
+            params={
+                "random_v3_pool": IUniswapV3Pool(
+                    "0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640"
+                ),
+                "random_user": Account(user_addr),
+                "random_salt": 55,
+            },
+            properties=[],
+        )
+        for i in range(0, 2)
+    ]
+    with must_revert(Errors.PoolAlreadyInitialized):
+        run(
+            issues,
+            bound_flows=flows,
         )
