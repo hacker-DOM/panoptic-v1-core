@@ -40,15 +40,22 @@ contract Utils {
     IUniswapV3Factory V3FACTORY = IUniswapV3Factory(0x1F98431c8aD98523631AE4a59f267346ea31F984);
 
     // Replicated from PanopticFactory.sol
-    function getSalt(address v3Pool, address deployer, uint96 nonce) external pure returns (bytes32) {
-        return bytes32(abi.encodePacked(PanopticMath.getPoolId(v3Pool), uint64(uint160(deployer)), nonce));
+    function getSalt(
+        address v3Pool,
+        address deployer,
+        uint96 nonce
+    ) external pure returns (bytes32) {
+        return
+            bytes32(
+                abi.encodePacked(PanopticMath.getPoolId(v3Pool), uint64(uint160(deployer)), nonce)
+            );
     }
 
-    function predictDeterministicAddress(address implementation, bytes32 salt, address deployer)
-        external
-        pure
-        returns (address predicted)
-    {
+    function predictDeterministicAddress(
+        address implementation,
+        bytes32 salt,
+        address deployer
+    ) external pure returns (address predicted) {
         assembly ("memory-safe") {
             let ptr := mload(0x40)
             mstore(add(ptr, 0x38), deployer)
@@ -60,6 +67,7 @@ contract Utils {
             predicted := keccak256(add(ptr, 0x43), 0x55)
         }
     }
+
     /*//////////////////////////////////////////////////////////////
                 COMPUTE FULL RANGE LIQUIDITY
     //////////////////////////////////////////////////////////////*/
@@ -68,19 +76,24 @@ contract Utils {
         PoolAddress.PoolKey univ3poolKey;
         address payer;
     }
+
     /// Replicated logic from _mintFullRange in Panoptic Factory
 
-    function computeFullRangeLiquidity(address panopticFactory, IUniswapV3Pool pool)
-        external
-        returns (uint128 fullRangeLiquidity, uint256 amount0, uint256 amount1)
-    {
+    function computeFullRangeLiquidity(
+        address panopticFactory,
+        IUniswapV3Pool pool
+    ) external returns (uint128 fullRangeLiquidity, uint256 amount0, uint256 amount1) {
         // get current tick
-        (uint160 currentSqrtPriceX96,,,,,,) = pool.slot0();
+        (uint160 currentSqrtPriceX96, , , , , , ) = pool.slot0();
 
         // build callback data
         bytes memory mintdata = abi.encode(
             CallbackData({ // compute by reading values from univ3pool every time
-                univ3poolKey: PoolAddress.PoolKey({token0: pool.token0(), token1: pool.token1(), fee: pool.fee()}),
+                univ3poolKey: PoolAddress.PoolKey({
+                    token0: pool.token0(),
+                    token1: pool.token1(),
+                    fee: pool.fee()
+                }),
                 payer: msg.sender
             })
         );
@@ -90,13 +103,21 @@ contract Utils {
         unchecked {
             // Since we know one of the tokens is WETH, we simply add 0.1 ETH + worth in tokens
             if (pool.token0() == _WETH) {
-                fullRangeLiquidity = uint128((FULL_RANGE_LIQUIDITY_AMOUNT_WETH * currentSqrtPriceX96) / Constants.FP96);
+                fullRangeLiquidity = uint128(
+                    (FULL_RANGE_LIQUIDITY_AMOUNT_WETH * currentSqrtPriceX96) / Constants.FP96
+                );
             } else if (pool.token1() == _WETH) {
-                fullRangeLiquidity = uint128((FULL_RANGE_LIQUIDITY_AMOUNT_WETH * Constants.FP96) / currentSqrtPriceX96);
+                fullRangeLiquidity = uint128(
+                    (FULL_RANGE_LIQUIDITY_AMOUNT_WETH * Constants.FP96) / currentSqrtPriceX96
+                );
             } else {
                 // Find the resulting liquidity for providing 1e6 of both tokens
-                uint128 liquidity0 = uint128((FULL_RANGE_LIQUIDITY_AMOUNT_TOKEN * currentSqrtPriceX96) / Constants.FP96);
-                uint128 liquidity1 = uint128((FULL_RANGE_LIQUIDITY_AMOUNT_TOKEN * Constants.FP96) / currentSqrtPriceX96);
+                uint128 liquidity0 = uint128(
+                    (FULL_RANGE_LIQUIDITY_AMOUNT_TOKEN * currentSqrtPriceX96) / Constants.FP96
+                );
+                uint128 liquidity1 = uint128(
+                    (FULL_RANGE_LIQUIDITY_AMOUNT_TOKEN * Constants.FP96) / currentSqrtPriceX96
+                );
 
                 // Pick the greater of the liquidities - i.e the more "expensive" option
                 // This ensures that the liquidity added is sufficiently large
@@ -115,7 +136,11 @@ contract Utils {
         }
     }
 
-    function uniswapV3MintCallback(uint256 amount0Owed, uint256 amount1Owed, bytes calldata data) external {
+    function uniswapV3MintCallback(
+        uint256 amount0Owed,
+        uint256 amount1Owed,
+        bytes calldata data
+    ) external {
         console.log("in callback");
         // Decode the mint callback data
         CallbackLib.CallbackData memory decoded = abi.decode(data, (CallbackLib.CallbackData));
@@ -126,10 +151,20 @@ contract Utils {
         if (amount0Owed > 0) {
             console.log("token 0", decoded.payer, msg.sender);
         }
-        SafeTransferLib.safeTransferFrom(decoded.poolFeatures.token0, decoded.payer, msg.sender, amount0Owed);
+        SafeTransferLib.safeTransferFrom(
+            decoded.poolFeatures.token0,
+            decoded.payer,
+            msg.sender,
+            amount0Owed
+        );
         if (amount1Owed > 0) {
             console.log("token 1", decoded.payer, msg.sender);
         }
-        SafeTransferLib.safeTransferFrom(decoded.poolFeatures.token1, decoded.payer, msg.sender, amount1Owed);
+        SafeTransferLib.safeTransferFrom(
+            decoded.poolFeatures.token1,
+            decoded.payer,
+            msg.sender,
+            amount1Owed
+        );
     }
 }
