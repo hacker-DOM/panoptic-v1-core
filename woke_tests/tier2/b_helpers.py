@@ -35,9 +35,7 @@ class Helpers(Init):
         )
         WETHE = IERC20Partial(WETH)  # "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48")
         mint_erc20_(WETH, s.paccs[0], 100000)
-        mint_erc20_(
-            Address("0xdAC17F958D2ee523a2206206994597C13D831ec7"), s.paccs[0], 100000
-        )
+
         print("balance is", IERC20Partial(WETH).balanceOf(s.paccs[0]))
         s.v3_pools = [IUniswapV3Pool(0x88E6A0C2DDD26FEEB64F039A2C41296FCB3F5640)]
 
