@@ -1,11 +1,20 @@
 from .d_impl import *
 
+from woke_tests.framework import get_address
+
 
 class Flows(Impl):
-    @flow()
-    def flow_random_int(s):
-        # ===== Randomize =====
-        x = random_int(0, 10)
+    def random_salt(s) -> int:
+        return generators.random_int(min=0, max=2**96 - 1)
 
-        # ===== Implement =====
-        s.impl_random_int(x)
+    @flow()
+    def set_owner(s, random_user: Account):
+
+        s.panopticFactory.setOwner(random_user, from_=s.panopticFactory.factoryOwner())
+        assert get_address(random_user) == s.panopticFactory.factoryOwner()
+
+    @flow()
+    def deploy_panoptic_pool(
+        s, random_v3_pool: IUniswapV3Pool, random_user: Account, random_salt: int
+    ):
+        s.impl_deploy_panoptic_pool(random_v3_pool, random_user, random_salt)

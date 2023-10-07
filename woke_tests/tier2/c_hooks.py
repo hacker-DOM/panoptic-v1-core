@@ -24,7 +24,7 @@ class Hooks(Helpers):
             #     _ = token.transfer(s.users[j], NUM_TOKENS_EACH_USER * 10**decimals, from_=s.paccs[0])
 
     @override
-    def pre_flow(s, flow: Callable[..., None]):
+    def pre_flow(s, flow: Callable[..., None], **args):
         with open(csv, "a") as f:
             _ = f.write(f"{s.sequence_num},{s.flow_num},{flow.__name__}\n")
 
