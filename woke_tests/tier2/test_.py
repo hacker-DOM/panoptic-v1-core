@@ -2,6 +2,8 @@ from .g_issues import *
 
 # pyright: basic
 
+from woke_tests.runner import stateful_test
+
 
 def on_revert_handler(e: TransactionRevertedError):
     if e.tx is not None:
@@ -10,17 +12,23 @@ def on_revert_handler(e: TransactionRevertedError):
 
 
 def tx_callback(tx: TransactionAbc):
+    # try:
     print("\n")
-    print(f"Executed transaction in block #{tx.block_number}\nFrom: {tx.from_}\nTo: {tx.to}\nReturn value: {tx.return_value}")
+    print(
+        f"Executed transaction in block #{tx.block_number}\nFrom: {tx.from_}\nTo: {tx.to}\nReturn value: {tx.return_value}"
+    )
     print(f"Trasaction events: {tx.events}")
     print(tx.events)
     print(f"Trasaction console logs: {tx.console_logs}")
     print(tx.console_logs)
     print("\n")
 
-
-    with open(csv, 'a') as f:
-        f.write(f",,,{tx.block_number},{tx.from_},{tx.to},{tx.return_value},{tx.events},{tx.console_logs}\n")
+    with open(csv, "a") as f:
+        f.write(
+            f",,,{tx.block_number},{tx.from_},{tx.to},{tx.return_value},{tx.events},{tx.console_logs}\n"
+        )
+    # except:
+    #    ...
 
 
 @default_chain.connect()
@@ -31,7 +39,6 @@ def test():
     default_chain.tx_callback = tx_callback
     # print('SEQUENCES_COUNT', SEQUENCES_COUNT)
     # print('FLOWS_COUNT', FLOWS_COUNT)
-    Issues().run(
-        SEQUENCES_COUNT,
-        FLOWS_COUNT,
-    )
+    bt = Issues()
+
+    stateful_test(bt, sequences_count=10, flow_count=5)

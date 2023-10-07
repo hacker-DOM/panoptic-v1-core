@@ -16,4 +16,7 @@ remappings = [
     "@scripts/=scripts/",
     "@uniswap/=lib/",
 ]
-optimizer = {enabled = true, runs = 200}
+optimizer = {enabled = true, runs = 5000}
+
+[testing.anvil]
+cmd_args = "--fork-url=https://eth-mainnet.g.alchemy.com/v2/vevMezCXoFshwV190wQcekYwQflctBeE  --prune-history 100 --transaction-block-keeper 10 --steps-tracing --silent --code-size-limit 2128000 --fork-block-number 18297903"

@@ -1,6 +1,7 @@
 from .c_types import *
 
 # pyright: basic
+from contextlib import contextmanager
 
 
 def adjusted_scientific_notation(val, num_decimals=2, exponent_pad=2):
@@ -35,3 +36,24 @@ def num_to_letter(num: int) -> str:
     # there are 26 letters in the English alphabet
     assert num >= 0 and num <= 25
     return chr(ord("a") + num)
+
+
+def mint_erc20_(token: Address, user: Account, amount: int):
+    total_supply_slot = 555555 if token == WETH else None
+    mint_erc20(
+        Account(address=token, chain=default_chain),
+        user,
+        amount,
+        total_supply_slot=total_supply_slot,
+    )
+
+
+@contextmanager
+def snapshot_and_revert_fix(chain: Chain):
+    # anvil bug, need to put the timestamp back where it was, snapshot_revert doesn't correctly restore ts
+    # when this ticket is closed, we can remove this block and just use snapshot_and_revert decorator
+    # https://github.com/foundry-rs/foundry/issues/5518
+    ts = chain.blocks[-1].timestamp
+    with chain.snapshot_and_revert():
+        yield
+    chain.set_next_block_timestamp(ts + 1)

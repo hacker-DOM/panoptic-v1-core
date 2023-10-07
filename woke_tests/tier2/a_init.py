@@ -6,6 +6,10 @@ from pytypes.contracts.PanopticFactory import PanopticFactory
 from pytypes.contracts.libraries.FeesCalc import FeesCalc
 from pytypes.contracts.univ3libraries.TickMath import TickMath
 from pytypes.contracts.univ3libraries.LiquidityAmounts import LiquidityAmounts
+from pytypes.contracts.libraries.InteractionHelper import InteractionHelper
+from pytypes.contracts.libraries.PanopticMath import PanopticMath
+
+from woke_tests.framework.generators.random.fuzz_test import FuzzTest
 
 
 class Init(FuzzTest):
@@ -32,7 +36,8 @@ class Init(FuzzTest):
         TickMath.deploy(from_=s.paccs[0])
         LiquidityAmounts.deploy(from_=s.paccs[0])
         FeesCalc.deploy(from_=s.paccs[0])
-
+        InteractionHelper.deploy(from_=s.paccs[0])
+        s.panoptic_math = PanopticMath.deploy(from_=s.paccs[0])
         # ===== Add labels =====
         for idx, usr in enumerate(s.users):
             usr.label = crypto_names[idx]
