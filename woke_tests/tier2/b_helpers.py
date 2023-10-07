@@ -31,7 +31,12 @@ class Helpers(Init):
         s.panopticFactory = PanopticFactoryHarness.deploy(
             WETH, s.sfpm, V3FACTORY_ADDRESS, pool, col, from_=s.factory_owner
         )
-        s.v3_pools = [IUniswapV3Pool(0x88E6A0C2DDD26FEEB64F039A2C41296FCB3F5640),IUniswapV3Pool(0xCBCdF9626bC03E24f779434178A73a0B4bad62eD), IUniswapV3Pool(0x290A6a7460B308ee3F19023D2D00dE604bcf5B42), IUniswapV3Pool(0x9feBc984504356225405e26833608b17719c82Ae)]
+        s.v3_pools = [
+            IUniswapV3Pool(0x88E6A0C2DDD26FEEB64F039A2C41296FCB3F5640),
+            IUniswapV3Pool(0xCBCDF9626BC03E24F779434178A73A0B4BAD62ED),
+            IUniswapV3Pool(0x290A6A7460B308EE3F19023D2D00DE604BCF5B42),
+            IUniswapV3Pool(0x9FEBC984504356225405E26833608B17719C82AE),
+        ]
 
     def _deploy_pool(s, pool: IUniswapV3Pool, owner: Account):
 

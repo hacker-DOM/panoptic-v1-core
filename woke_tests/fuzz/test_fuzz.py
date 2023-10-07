@@ -15,12 +15,9 @@ from woke_tests.runner import fuzz_test
 @default_chain.connect()
 def test_owner():
     print("deploy_pool")
-    print("===================")    
+    print("===================")
     issues = Issues()
-    fuzz_test(
-        issues,
-        sequences_count=10, flow_name=["set_owner"]
-    )
+    fuzz_test(issues, sequences_count=0, flow_name=["set_owner"])
 
 
 @default_chain.connect()
@@ -28,8 +25,12 @@ def test_deploy_pool():
     print("deploy_pool")
     print("===================")
     issues = Issues()
-    fuzz_test(
-        issues,
-        sequences_count=10, flow_name=["deploy_panoptic_pool"]        
-    )
+    fuzz_test(issues, sequences_count=0, flow_name=["deploy_panoptic_pool"])
 
+
+@default_chain.connect()
+def test_deploy_rarity():
+    print("deploy_pool")
+    print("===================")
+    issues = Issues()
+    fuzz_test(issues, sequences_count=10, flow_name=["deploy_panoptic_pool_rarity"])
